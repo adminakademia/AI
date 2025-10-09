@@ -1,0 +1,4 @@
+mkdir -p /docker/n8n/n8ndata
+mkdir -p /docker/n8n/postgres_data
+chown -R 1000:1000 /docker/n8n
+chmod 750 -R /docker/n8n
