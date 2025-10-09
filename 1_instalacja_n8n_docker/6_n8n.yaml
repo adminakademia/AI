@@ -8,7 +8,7 @@ services:
     environment:
       # Nazwa użytkownika bazy danych:
       - POSTGRES_USER=n8n
-      # Hasło użytkownika bazy danych (należy zmienić na silne hasło):
+      # Hasło użytkownika bazy danych (należy zmienić na silne hasło) -> ZMIEŃ NA WŁASNĄ WARTOŚĆ:
       - POSTGRES_PASSWORD=UstawJakiesTrudneHaslo
       # Nazwa bazy danych, która zostanie utworzona przy starcie kontenera:
       - POSTGRES_DB=n8n
@@ -41,11 +41,11 @@ services:
       - DB_POSTGRESDB_USER=n8n
       # Hasło użytkownika bazy danych, zgodne z tym zdefiniowanym wcześniej w kontenerze n8ndb:
       - DB_POSTGRESDB_PASSWORD=UstawJakiesTrudneHaslo
-      # Środowisko uruchomieniowe — "production" zapewnia większe bezpieczeństwo i stabilność:
+      # Środowisko uruchomieniowe — "production" zapewnia optymalizację wydajności, oraz wyłączone szczegółowe komunikaty błędów, mniej logów:
       - NODE_ENV=production
-      # Publiczny adres URL, pod którym dostępne będą webhooki n8n:
+      # Publiczny adres URL, pod którym dostępne będą webhooki n8n -> ZMIEŃ NA WŁASNĄ WARTOŚĆ:
       - WEBHOOK_URL=https://twoja.domena.pl
-      # Adres DNS lub IP, na którym działa instancja n8n (ważne dla generowania linków)
+      # Adres DNS lub IP, na którym działa instancja n8n (ważne dla generowania linków) -> ZMIEŃ NA WŁASNĄ WARTOŚĆ:
       - N8N_HOST=twoja.domena.pl
       # Protokół używany przez aplikację (http lub https):
       - N8N_PROTOCOL=https
