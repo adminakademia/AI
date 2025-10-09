@@ -1,34 +1,67 @@
 services:
+  # nazwa kontenera z bazą danych która będzie wykorzystywana przez aplikację n8n:
   n8ndb:
+    # Uruchamiamy obraz kontenera PostgreSQL w wersji 17:
     image: postgres:17
+    # Uruchamianie kontenera z określonym użytkownikiem (UID:GID):
     user: "1000:1000"
     environment:
+      # Nazwa użytkownika bazy danych:
       - POSTGRES_USER=n8n
+      # Hasło użytkownika bazy danych (należy zmienić na silne hasło):
       - POSTGRES_PASSWORD=UstawJakiesTrudneHaslo
+      # Nazwa bazy danych, która zostanie utworzona przy starcie kontenera:
       - POSTGRES_DB=n8n
+    # Miejsce na dane bazy danych – montowane do wskazanego katalogu na hoście
+    # Dzięki temu dane nie znikają po usunięciu kontenera:
     volumes:
       - /docker/n8n/postgres_data:/var/lib/postgresql/data
+
+      
+  # nazwa kontenera aplikacji n8n:
   n8n:
+    # Uruchamiamy obraz kontenera n8n:
     image: n8nio/n8n
+    # Ustawienie automatycznego restartu w razie awarii lub restartu hosta:
     restart: always
+    # Uruchamianie kontenera z określonym użytkownikiem (UID:GID):
     user: "1000:1000"
+    # Mapowanie portu 5678 wewnątrz kontenera na port 5678 hosta
+    # Umożliwia dostęp do interfejsu webowego n8n pod adresem http://adres_ip:5678
     ports:
       - "5678:5678"
     environment:
+       # Typ bazy danych, z jakiej korzysta n8n (tu: PostgreSQL):
       - DB_TYPE=postgresdb
+      # Adres hosta bazy danych z jakiej korzysta n8n — nazwa usługi zdefiniowanej wcześniej dla kontenera PostgreSQL (n8ndb):
       - DB_POSTGRESDB_HOST=n8ndb
+      # Nazwa bazy danych używanej przez n8n:
       - DB_POSTGRESDB_DATABASE=n8n
+      # Użytkownik bazy danych, zgodny z tym zdefiniowanym wcześniej w kontenerze n8ndb:
       - DB_POSTGRESDB_USER=n8n
+      # Hasło użytkownika bazy danych, zgodne z tym zdefiniowanym wcześniej w kontenerze n8ndb:
       - DB_POSTGRESDB_PASSWORD=UstawJakiesTrudneHaslo
+      # Środowisko uruchomieniowe — "production" zapewnia większe bezpieczeństwo i stabilność:
       - NODE_ENV=production
+      # Publiczny adres URL, pod którym dostępne będą webhooki n8n:
       - WEBHOOK_URL=https://twoja.domena.pl
+      # Adres DNS lub IP, na którym działa instancja n8n (ważne dla generowania linków)
       - N8N_HOST=twoja.domena.pl
+      # Protokół używany przez aplikację (http lub https):
       - N8N_PROTOCOL=https
-      - N8N_SECURE_COOKIE=false
+      # Czy ciasteczka mają być oznaczone jako "secure"
+      # false -> pozwoliłoby na testy lokalne bez HTTPS
+      - N8N_SECURE_COOKIE=true
+      # Włączenie obsługi runnerów (uruchamianie przepływów/workflow w osobnych procesach):
       - N8N_RUNNERS_ENABLED=true
+      # Strefa czasowa dla harmonogramów i logów:
       - GENERIC_TIMEZONE=Europe/Warsaw
+    
+    # Poniższe zapewnia, że kontener n8n uruchomi się dopiero po starcie bazy danych:
     depends_on:
       - n8ndb
     volumes:
+       # Miejsce na dane bazy danych – montowane do wskazanego katalogu na hoście
+       # Dzięki temu dane nie znikają po usunięciu kontenera:
       - /docker/n8n/n8ndata:/home/node/.n8n
       
