@@ -3,6 +3,8 @@ services:
   n8ndb:
     # Uruchamiamy obraz kontenera PostgreSQL w wersji 17:
     image: postgres:17
+    # Ustawienie automatycznego restartu w razie awarii lub restartu hosta:
+    restart: always
     # Uruchamianie kontenera z określonym użytkownikiem (UID:GID):
     user: "1000:1000"
     environment:
