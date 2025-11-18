@@ -1,0 +1,34 @@
+# Warto pamiętać, aby wykorzystać polecenia dostępne aktualnie na stronie:
+https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/install/installryz/native_linux/install-ryzen.html
+
+# Natomiast w odcinku wykorzystano polecenia:
+sudo apt update && sudo apt-get install linux-oem-24.04c
+
+
+# Restart systemu, aby zastosować wcześniejsze zmiany:
+sudo reboot 
+
+# Weryfikujemy, czy po restarcie wersja aktualnie uruchomionego jądra Linux jest właściwa
+uname -r
+
+# Aktualizacja oprogramowania w Linux do najnowszego:
+sudo apt update && sudo apt upgrade -y
+
+# Pobieramy i instalujemy następnie paczkę instalatora sterowników AMDGPU/ROCm z oficjalnego repozytorium AMD:
+wget https://repo.radeon.com/amdgpu-install/7.1/ubuntu/noble/amdgpu-install_7.1.70100-1_all.deb
+sudo apt install ./amdgpu-install_7.1.70100-1_all.deb
+
+# Uruchamiamy właściwą instalację:
+amdgpu-install -y --usecase=rocm --no-dkms
+
+# Dodajemy aktualnego użytkownika do odpowiednich grup:
+sudo usermod -a -G render,video $LOGNAME
+
+# Ponowny restart systemu:
+sudo reboot
+
+# Wyświetlamy po restarcie informacje o wykrytym GPU ROCm:
+rocminfo
+
+# Instalujemy pseudograficzny monitor wykorzystania GPU AMD w czasie rzeczywistym:
+sudo apt install radeontop
