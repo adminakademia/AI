@@ -1,0 +1,21 @@
+# Najpierw instalujemy oprogramowanie Docker zgodnie z instrukcją aktualną na stronie:
+https://docs.docker.com/engine/install/ubuntu/
+
+# Dodajemy swojego użytkownika do grupy docker, aby używać dockera bez sudo:
+sudo usermod -aG docker $USER
+
+# Tworzymy katalog w którym kontener Ollama będzie przechowywać swoje dane:
+sudo mkdir -p /docker/ollama
+
+# Uruchomienie kontenera Ollama bez wykorzystaniem karty graficznej (czyli wykorzystując procesor):
+docker run -d -v /docker/ollama:/root/.ollama --restart always -p 11434:11434 --name ollama ollama/ollama
+
+# Uruchomienie kontenera Ollama z wykorzystaniem karty graficznej NVIDIA:
+docker run --gpus all -d -v /docker/ollama:/root/.ollama --restart always -p 11434:11434 --name ollama ollama/ollama
+
+# Uruchomienie kontenera Ollama z wykorzystaniem karty graficznej AMD Radeon:
+docker run -d --device=/dev/kfd --device=/dev/dri --group-add video -e HSA_ENABLE_SDMA=0 -e ROCR_VISIBLE_DEVICES=0 -v /docker/ollama:/root/.ollama --restart always -p 11434:11434 --name ollama ollama/ollama:rocm
+
+# Pobranie i uruchomienie danego lokalnego modelu AI w kontenerze docker'owym z Ollama:
+docker exec -it ollama ollama pull gpt-oss:20b
+docker exec -it ollama ollama run gpt-oss:20b
