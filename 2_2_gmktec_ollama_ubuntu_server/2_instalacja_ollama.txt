@@ -1,0 +1,18 @@
+# Pobranie i instalacja Ollama z oficjalnego skryptu instalacyjnego:
+curl -fsSL https://ollama.com/install.sh | sh 
+
+# Sprawdzenie zainstalowanej wersji Ollama:
+ollama --version
+
+# Edytujemy pliku jednostki systemd dla usługi Ollama:
+sudo systemctl edit ollama.service
+
+# I po wyświetleniu zawartości pliku usługi, dopisujemy ustawienie zmiennej środowiskowej zmieniającej adres IP na którym będzie nasłuchiwać Ollama (dowolnym adresie IP):
+[Service]
+Environment="OLLAMA_HOST=0.0.0.0:11434"
+
+# Przeładowanie konfiguracji usług systemd po zmianach:
+sudo systemctl daemon-reload
+
+# Restart usługi Ollama, aby zastosować nową konfigurację:
+sudo systemctl restart ollama
