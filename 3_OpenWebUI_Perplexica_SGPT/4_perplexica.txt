@@ -1,0 +1,14 @@
+# Dokumentacja projektu:
+# https://github.com/ItzCrazyKns/Perplexica
+
+
+services:
+  perplexica:
+    image: itzcrazykns1337/perplexica:latest
+    container_name: perplexica
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - /docker/perplexica/data:/home/perplexica/data
+      - /docker/perplexica/uploads:/home/perplexica/uploads
