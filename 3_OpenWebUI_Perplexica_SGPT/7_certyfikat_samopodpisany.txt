@@ -1,0 +1,1 @@
+openssl req -new -days 36500 -nodes -x509 -newkey ec -pkeyopt ec_paramgen_curve:prime256v1 -subj "/C=PL/ST=SLASK/L=Gliwice/O=AdminAkademia/OU=IT/CN=*.jojeadmin.pl/emailAddress=kontakt@jojeadmin.pl" -keyout jojeadminwild.key -out jojeadminwild.pem -addext "subjectAltName=DNS:jojeadmin.pl,DNS:*.jojeadmin.pl"
