@@ -1,0 +1,28 @@
+# Dokumentacja:
+# https://github.com/open-webui/open-webui
+
+
+services:
+
+  webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: openwebui
+    restart: unless-stopped
+    ports:
+     - 9090:8080/tcp
+    environment: 
+      # --- Połączenie z Ollama ---
+      OLLAMA_BASE_URL: "http://192.168.101.101:11434"
+      
+      # --- KONFIGURACJA MOWY -> TEKST (STT) ---
+      # Puste / brak = użyj lokalnego Whisper (Local)
+      AUDIO_STT_ENGINE: ""
+
+      # Język rozpoznawania – polski
+      WHISPER_LANGUAGE: "pl"
+
+      # Model whisper – dobierz do sprzętu:
+      # "small" / "medium" / "large-v3" itd.
+      WHISPER_MODEL: "small"
+    volumes:
+     - /docker/openwebui:/app/backend/data
